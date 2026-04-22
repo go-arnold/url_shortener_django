@@ -1,0 +1,1 @@
+"""Shortener app test package."""
