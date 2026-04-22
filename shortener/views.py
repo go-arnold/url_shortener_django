@@ -1,6 +1,6 @@
 """Views for short URL redirect behavior."""
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from drf_spectacular.openapi import OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 from rest_framework.views import APIView
@@ -26,7 +26,7 @@ class RedirectShortURLView(APIView):
         ],
         responses={
             302: None,  # Redirect response
-            404: {"description": "Short code not found"},
+            404: OpenApiResponse(description="Short code not found"),
         },
         description="Redirect a short code to its original URL.",
         summary="Redirect short URL",
