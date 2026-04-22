@@ -1,7 +1,6 @@
 """Serializer definitions for URL API."""
 
-from rest_framework import status
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.exceptions import APIException
 
 from shortener.models import ShortURL

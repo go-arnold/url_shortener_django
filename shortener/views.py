@@ -1,12 +1,11 @@
 """Views for short URL redirect behavior."""
 
-from drf_spectacular.utils import OpenApiResponse, extend_schema
-from drf_spectacular.openapi import OpenApiParameter
-from drf_spectacular.types import OpenApiTypes
-from rest_framework.views import APIView
-
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from drf_spectacular.openapi import OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiResponse, extend_schema
+from rest_framework.views import APIView
 
 from shortener.models import ShortURL
 

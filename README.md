@@ -42,6 +42,35 @@ Services:
 - Swagger docs: http://localhost:8000/api/docs/
 - OpenAPI schema: http://localhost:8000/api/schema/
 
+## Code quality hooks (pre-commit)
+
+This repository uses `pre-commit` hooks for:
+
+- `black` (formatting)
+- `ruff` (linting)
+- `mypy` (type checks)
+
+Install and enable hooks:
+
+```bash
+pip install -r requirements.txt
+pre-commit install
+```
+
+Run hooks manually for all files:
+
+```bash
+pre-commit run --all-files
+```
+
+Run individual checks:
+
+```bash
+black .
+ruff check .
+mypy .
+```
+
 ## API usage
 
 ### Create short URL
