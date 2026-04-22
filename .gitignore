@@ -8,3 +8,7 @@ __pycache__/
 htmlcov/
 *.log
 staticfiles/
+.venv/
+
+migrations/*
+!migrations/__init__.py
