@@ -1,5 +1,7 @@
 """Tests for URL creation API."""
 
+from unittest import mock
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -22,3 +24,12 @@ class ShortURLCreateAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("original_url", response.data)
+
+    @mock.patch("api.views.ShortURLCreateAPIView.max_generation_attempts", 1)
+    @mock.patch("api.views.RandomShortCodeGenerator.generate", return_value="Ab12Cd")
+    def test_create_short_url_returns_503_when_unique_code_cannot_be_generated(self, _mock_generate):
+        ShortURL.objects.create(original_url="https://example.com/existing", short_code="Ab12Cd")
+
+        response = self.client.post("/api/urls/", {"original_url": "https://example.com/new"}, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)

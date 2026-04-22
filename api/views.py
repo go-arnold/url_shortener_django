@@ -2,6 +2,7 @@
 
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,10 +11,19 @@ from shortener.models import ShortURL
 from shortener.services.random_code_generator import RandomShortCodeGenerator
 
 
+class ShortCodeGenerationError(APIException):
+    """Raised when a unique short code cannot be generated."""
+
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    default_detail = "Unable to generate a short code at the moment. Please retry."
+    default_code = "short_code_generation_unavailable"
+
+
 class ShortURLCreateAPIView(APIView):
     """Create short URLs from incoming long URLs."""
 
     code_generator = RandomShortCodeGenerator()
+    max_generation_attempts = 20
 
     @extend_schema(
         request=CreateShortURLSerializer,
@@ -46,7 +56,8 @@ class ShortURLCreateAPIView(APIView):
         Returns:
             str: A unique 6-character short code.
         """
-        while True:
+        for _ in range(self.max_generation_attempts):
             candidate = self.code_generator.generate(length=6)
             if not ShortURL.objects.filter(short_code=candidate).exists():
                 return candidate
+        raise ShortCodeGenerationError()
