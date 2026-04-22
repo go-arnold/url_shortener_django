@@ -7,10 +7,11 @@ from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config("SECRET_KEY", default="TheGeneralLeGeneralSECRET_KEYCleGeneral", cast=str)
+DEFAULT_DEV_SECRET_KEY = "dev-only-secret-key-change-me"
+SECRET_KEY = config("SECRET_KEY", default=DEFAULT_DEV_SECRET_KEY, cast=str)
 DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
-if not DEBUG and SECRET_KEY == "TheGeneralLeGeneralSECRET_KEYCleGeneral":
+if not DEBUG and SECRET_KEY == DEFAULT_DEV_SECRET_KEY:
     raise ValueError("SECRET_KEY must be explicitly set when DEBUG is False.")
 
 INSTALLED_APPS = [
