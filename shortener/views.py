@@ -3,8 +3,6 @@
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.openapi import OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
-from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.http import Http404, HttpResponseRedirect
