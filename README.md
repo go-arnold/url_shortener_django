@@ -108,3 +108,28 @@ Use `.env` with:
 - `DATABASE_URL`
 
 Example values are provided in `.env.example`.
+
+
+
+```mermaid
+graph TD
+    User((User/Client)) -->|API Request| API[API Layer - DRF]
+    User -->|Short Link Click| Redirect[Redirect View]
+    
+    subgraph "Django Application"
+        API -->|Serialize/Validate| Models[URL, User, Tag Models]
+        Redirect -->|Update Analytics| Click[Click/Analytics Model]
+        Redirect -->|Lookup| URL[URL Model]
+    end
+
+    subgraph "Data Storage"
+        Models --> DB[(PostgreSQL)]
+        Click --> DB
+    end
+
+    subgraph "Features"
+        URL --- Manager[URLManager: active, expired, popular]
+        URL --- Agg[Aggregation: Stats by Country]
+        URL --- Opt[Optimization: select_related / prefetch_related]
+    end
+```
